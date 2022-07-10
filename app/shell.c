@@ -100,11 +100,38 @@ void shell_process(void){
 					}
 				}
 			}
+			else if((strncmp("led", (char*)argv[0],3) == 0) && (strncmp("time", (char*)argv[1],4) == 0)){
+				int n = 0;
+
+				if(sscanf((char*)argv[1], "%d",&n)){
+					if(strncmp("on", (char*)argv[2],3) == 0){
+//						hw_led_state_set(true);
+						delay = 50;
+						shell_uart_tx((uint8_t*)"led 1 on\n",9);
+						error = false;
+					}
+					else if(strncmp("off", (char*)argv[2],3) == 0){
+//						hw_led_state_set(false);
+						delay = 1000;
+						shell_uart_tx((uint8_t*)"led 1 off\n",100);
+						error = false;
+					}
+				}
+			}
 		}else if(argc == 2){
 			if((strncmp("get", (char*)argv[0],3) == 0) && (strncmp("time", (char*)argv[1],4) == 0)){
 				shell_ctrl.size = sprintf((char*)shell_ctrl.cmd, "time %u\n",(unsigned int)delay);
 				shell_uart_tx(shell_ctrl.cmd, shell_ctrl.size);
 				error = false;
+			}
+			else if(strncmp("bot", (char*)argv[0],3) == 0){
+				int n = 0;
+
+				if(sscanf((char*)argv[1], "%d",&n)){
+					hw_button_state_get();
+					shell_uart_tx((uint8_t*)"bot 1 off\n",10);
+					error = false;
+				}
 			}
 		}
 	}

@@ -29,10 +29,14 @@ void app_button_interrupt(void){
 
 	if((hw_tick_ms_get() - debouncing_time_ms) >= APP_DEBOUNCING_TIME_MS){
 //		delay = (delay == 1000)? 100 : 1000;
-		if(delay == 1000)
-			hw_uart_tx((uint8_t*)"set time 100\n",13);
-		else
-			delay = 3000;
+		if(delay == 1000){
+//			hw_uart_tx((uint8_t*)"led 1 on\n",9);
+			hw_uart_tx((uint8_t*)"set timer 50\n",13);
+		}
+		else{
+			delay = 1000;
+//			hw_uart_tx((uint8_t*)"led 1 off\n",10);
+		}
 		debouncing_time_ms = hw_tick_ms_get();
 	}
 }
