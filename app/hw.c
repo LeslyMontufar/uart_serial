@@ -10,9 +10,7 @@
 #include <stdint.h>
 #include "main.h"
 #include "app.h"
-
-#include "main.h"
-#include "app.h"
+#include "cbf.h"
 
 extern UART_HandleTypeDef huart2; //extern: linker sabe que essa var já existe, e usa essa msm variável
 static cbf_t *hw_uart_cbf = 0; // buffer circular
@@ -23,8 +21,8 @@ void hw_uart_disable_interrupts(void){
 
 void hw_uart_enable_interrupts(void){
 	HAL_NVIC_SetPriority(USART2_IRQn, 2, 0);
-	HAL_NVIC_EnableIRQ(USART2_IRQn);
 	HAL_NVIC_ClearPendingIRQ(USART2_IRQn);
+	HAL_NVIC_EnableIRQ(USART2_IRQn);
 }
 
 void hw_uart_init(cbf_t *cbf){
@@ -37,13 +35,14 @@ void hw_uart_init(cbf_t *cbf){
 	hw_uart_enable_interrupts();
 }
 
-void hw_uart2_it(void){ // INTERRUPÇÃO - recepção
+// INTERRUPÇÃO - recepção
+void hw_uart2_interrupt(void){
 	uint8_t c;
 	uint32_t sr;
 	USART_TypeDef *h = huart2.Instance;
 
 	sr = h->SR;
-	while(sr & (USART_FLAG_ORE | UART_FLAG_PE | UART_FLAG_FE | UART_FLAG_NE)){
+	while(sr & (UART_FLAG_ORE | UART_FLAG_PE | UART_FLAG_FE | UART_FLAG_NE)){
 		sr = h->SR;
 		c = h->DR;
 	}
@@ -57,16 +56,17 @@ void hw_uart2_it(void){ // INTERRUPÇÃO - recepção
 	}
 }
 
-static void hw_uart_tx_byte(uint8_t c){ // POOLING - transmissão
-	USART_TypeDef *h = huart2.Instance;
+// POOLING - transmissão
+static void hw_uart_tx_byte(uint8_t c){
+	USART_TypeDef *h = huart2.Instance; // USART_PORT
 
 	// garante que o shift register esteja vazio
 	while(!(h->SR & UART_FLAG_TXE)){}
 	h->DR = c;
 }
 
-static void hw_uart_tx(uint8_t *buffer, uint32_t size){
-	for(size_t pos = 0; pos <size; pos++) //size_t é o tipo com maior tamanho possível de acordo com a plataforma para o loop seja executado
+void hw_uart_tx(uint8_t *buffer, uint32_t size){
+	for(size_t pos = 0; pos < size; pos++) //size_t é o tipo com maior tamanho possível de acordo com a plataforma para o loop seja executado
 		hw_uart_tx_byte(buffer[pos]);
 }
 

@@ -1,0 +1,5 @@
+../app/cbf.c:7:14:cbf_init	24	static
+../app/cbf.c:15:10:cbf_bytes_available	16	static
+../app/cbf.c:22:14:cbf_flush	16	static
+../app/cbf.c:27:14:cbf_get	16	static
+../app/cbf.c:38:14:cbf_put	24	static

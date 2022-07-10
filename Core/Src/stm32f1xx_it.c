@@ -22,6 +22,7 @@
 #include "stm32f1xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "app.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -55,7 +56,6 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
-extern UART_HandleTypeDef huart1;
 extern UART_HandleTypeDef huart2;
 /* USER CODE BEGIN EV */
 
@@ -188,7 +188,7 @@ void SysTick_Handler(void)
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */
-
+  app_tick_1ms();
   /* USER CODE END SysTick_IRQn 1 */
 }
 
@@ -200,32 +200,19 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
-  * @brief This function handles USART1 global interrupt.
-  */
-void USART1_IRQHandler(void)
-{
-  /* USER CODE BEGIN USART1_IRQn 0 */
-
-  /* USER CODE END USART1_IRQn 0 */
-  HAL_UART_IRQHandler(&huart1);
-  /* USER CODE BEGIN USART1_IRQn 1 */
-
-  /* USER CODE END USART1_IRQn 1 */
-}
-
-/**
   * @brief This function handles USART2 global interrupt.
   */
+
 void USART2_IRQHandler(void)
 {
   /* USER CODE BEGIN USART2_IRQn 0 */
-#if 0
+#if 1
+	extern void hw_uart2_interrupt(void);
+	hw_uart2_interrupt();
+#else
   /* USER CODE END USART2_IRQn 0 */
   HAL_UART_IRQHandler(&huart2);
   /* USER CODE BEGIN USART2_IRQn 1 */
-#else
-  extern void hw_uart2_it(void);
-  hw_uart2_it(void);
 #endif
   /* USER CODE END USART2_IRQn 1 */
 }

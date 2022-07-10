@@ -1,0 +1,13 @@
+../app/hw.c:18:6:hw_uart_disable_interrupts	8	static
+../app/hw.c:22:6:hw_uart_enable_interrupts	8	static
+../app/hw.c:28:6:hw_uart_init	16	static
+../app/hw.c:39:6:hw_uart2_interrupt	24	static
+../app/hw.c:60:13:hw_uart_tx_byte	24	static
+../app/hw.c:68:6:hw_uart_tx	24	static
+../app/hw.c:75:6:HAL_GPIO_EXTI_Callback	16	static
+../app/hw.c:81:6:hw_button_state_get	16	static
+../app/hw.c:90:6:hw_led_toggle	8	static
+../app/hw.c:94:6:hw_led_state_set	24	static
+../app/hw.c:99:6:hw_delay_ms	16	static
+../app/hw.c:103:6:hw_cpu_sleep	4	static,ignoring_inline_asm
+../app/hw.c:107:10:hw_tick_ms_get	8	static
