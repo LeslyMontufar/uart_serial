@@ -7,17 +7,20 @@
 C_SRCS += \
 ../app/app.c \
 ../app/cbf.c \
-../app/hw.c 
+../app/hw.c \
+../app/shell.c 
 
 OBJS += \
 ./app/app.o \
 ./app/cbf.o \
-./app/hw.o 
+./app/hw.o \
+./app/shell.o 
 
 C_DEPS += \
 ./app/app.d \
 ./app/cbf.d \
-./app/hw.d 
+./app/hw.d \
+./app/shell.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -27,7 +30,7 @@ app/%.o app/%.su: ../app/%.c app/subdir.mk
 clean: clean-app
 
 clean-app:
-	-$(RM) ./app/app.d ./app/app.o ./app/app.su ./app/cbf.d ./app/cbf.o ./app/cbf.su ./app/hw.d ./app/hw.o ./app/hw.su
+	-$(RM) ./app/app.d ./app/app.o ./app/app.su ./app/cbf.d ./app/cbf.o ./app/cbf.su ./app/hw.d ./app/hw.o ./app/hw.su ./app/shell.d ./app/shell.o ./app/shell.su
 
 .PHONY: clean-app
 

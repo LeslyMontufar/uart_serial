@@ -15,6 +15,8 @@ void hw_uart_init(cbf_t *cbf);
 void hw_uart2_interrupt(void);
 
 void hw_uart_tx(uint8_t *buffer, uint32_t size);
+
+
 bool hw_button_state_get(void);
 void hw_led_state_set(bool state);
 void hw_delay_ms(uint32_t time_ms);

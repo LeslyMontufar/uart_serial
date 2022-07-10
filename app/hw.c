@@ -66,11 +66,11 @@ static void hw_uart_tx_byte(uint8_t c){
 }
 
 void hw_uart_tx(uint8_t *buffer, uint32_t size){
-	for(size_t pos = 0; pos < size; pos++) //size_t é o tipo com maior tamanho possível de acordo com a plataforma para o loop seja executado
+	for(size_t pos = 0; pos < size; pos++)
 		hw_uart_tx_byte(buffer[pos]);
 }
 
-// Fim
+// ---------------------------------------------------- //
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 	if(GPIO_Pin == GPIO_PIN_0){
