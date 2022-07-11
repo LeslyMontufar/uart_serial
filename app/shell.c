@@ -102,16 +102,19 @@ void shell_process(void){
 			}
 			else if(strncmp("led", (char*)argv[0],3) == 0){
 				int n = 0;
+				uint8_t s[SHELL_UART_BUFFER_MAX];
 
 				if(sscanf((char*)argv[1], "%d",&n)){
 					if(strncmp("on", (char*)argv[2],2) == 0){
 						hw_led_n_state_set(n,true);
-						shell_uart_tx((uint8_t*)"led 1 on\n",9);
+						sprintf(s, "led %d off\n", n);
+						shell_uart_tx(s,9);
 						error = false;
 					}
 					else if(strncmp("off", (char*)argv[2],3) == 0){
 						hw_led_n_state_set(n,false);
-						shell_uart_tx((uint8_t*)"led 1 off\n",100);
+						sprintf(s, "led %d off\n", n);
+						shell_uart_tx(s,10);
 						error = false;
 					}
 				}
@@ -124,12 +127,16 @@ void shell_process(void){
 			}
 			else if(strncmp("bot", (char*)argv[0],3) == 0){
 				int n = 0;
+				uint8_t s[SHELL_UART_BUFFER_MAX];
 
 				if(sscanf((char*)argv[1], "%d",&n)){
-					if(hw_button_n_state_get(n))
-						shell_uart_tx((uint8_t*)"bot 1 on\n",9);
-					else
-						shell_uart_tx((uint8_t*)"bot 1 off\n",10);
+					if(hw_button_n_state_get(n)){
+						sprintf(s, "bot %d on\n", n);
+						shell_uart_tx(s,9);
+					}else {
+						sprintf(s, "bot %d off\n", n);
+						shell_uart_tx(s,10);
+					}
 					error = false;
 				}
 			}

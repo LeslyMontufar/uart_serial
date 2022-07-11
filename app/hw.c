@@ -101,7 +101,7 @@ bool hw_button_n_state_get(uint8_t n){
 }
 
 void hw_led_toggle(void){
-	HAL_GPIO_TogglePin(LED3_GPIO_Port, LED3_Pin);
+	HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
 }
 
 void hw_led_state_set(bool state){
