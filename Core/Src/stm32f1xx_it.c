@@ -207,11 +207,14 @@ void SysTick_Handler(void)
 void EXTI0_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI0_IRQn 0 */
-
+#if 1
+	__HAL_GPIO_EXTI_CLEAR_IT(BUTTON_Pin);
+	app_button_interrupt();
+#else
   /* USER CODE END EXTI0_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(BUTTON_Pin);
   /* USER CODE BEGIN EXTI0_IRQn 1 */
-
+#endif
   /* USER CODE END EXTI0_IRQn 1 */
 }
 
@@ -247,6 +250,23 @@ void USART2_IRQHandler(void)
   /* USER CODE BEGIN USART2_IRQn 1 */
 #endif
   /* USER CODE END USART2_IRQn 1 */
+}
+
+/**
+  * @brief This function handles EXTI line[15:10] interrupts.
+  */
+void EXTI15_10_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI15_10_IRQn 0 */
+#if 1
+	__HAL_GPIO_EXTI_CLEAR_IT(BUTTON2_Pin);
+	app_button2_interrupt();
+#else
+  /* USER CODE END EXTI15_10_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(BUTTON2_Pin);
+  /* USER CODE BEGIN EXTI15_10_IRQn 1 */
+#endif
+  /* USER CODE END EXTI15_10_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */

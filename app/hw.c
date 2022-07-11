@@ -72,12 +72,6 @@ void hw_uart_tx(uint8_t *buffer, uint32_t size){
 
 // ---------------------------------------------------- //
 
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
-	if(GPIO_Pin == GPIO_PIN_0){
-		app_button_interrupt();
-	}
-}
-
 bool hw_button_state_get(void){
 	GPIO_PinState button_state = HAL_GPIO_ReadPin(BUTTON_GPIO_Port, BUTTON_Pin);
 
@@ -87,13 +81,72 @@ bool hw_button_state_get(void){
 		return false;
 }
 
+bool hw_button_n_state_get(uint8_t n){
+	GPIO_PinState button_state;
+	switch(n){
+		case 1:
+			button_state = HAL_GPIO_ReadPin(BUTTON_GPIO_Port, BUTTON_Pin);
+			break;
+		case 2:
+			button_state = HAL_GPIO_ReadPin(BUTTON2_GPIO_Port, BUTTON2_Pin);
+			break;
+		default:
+			button_state = HAL_GPIO_ReadPin(BUTTON_GPIO_Port, BUTTON_Pin);
+			break;
+	}
+	if(button_state == GPIO_PIN_RESET)
+		return true;
+	else
+		return false;
+}
+
 void hw_led_toggle(void){
-	HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+	HAL_GPIO_TogglePin(LED3_GPIO_Port, LED3_Pin);
 }
 
 void hw_led_state_set(bool state){
 	GPIO_PinState led_state = state ? GPIO_PIN_RESET : GPIO_PIN_SET;
 	HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, led_state);
+}
+
+void hw_led_n_state_set(uint8_t n, bool state){
+	GPIO_PinState led_state = state ? GPIO_PIN_RESET : GPIO_PIN_SET;
+	switch(n){
+		case 1:
+			HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, led_state);
+			break;
+		case 2:
+			HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, led_state);
+			break;
+		case 3:
+			HAL_GPIO_WritePin(LED3_GPIO_Port, LED3_Pin, led_state);
+			break;
+		default:
+			HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, led_state);
+			break;
+	}
+}
+
+bool hw_led_n_state_get(uint8_t n){
+	GPIO_PinState led_state;
+	switch(n){
+		case 1:
+			led_state =  HAL_GPIO_ReadPin(LED_GPIO_Port, LED_Pin);
+			break;
+		case 2:
+			led_state =  HAL_GPIO_ReadPin(LED2_GPIO_Port, LED2_Pin);
+			break;
+		case 3:
+			led_state =  HAL_GPIO_ReadPin(LED3_GPIO_Port, LED3_Pin);
+			break;
+		default:
+			led_state =  HAL_GPIO_ReadPin(LED_GPIO_Port, LED_Pin);
+			break;
+	}
+	if(led_state == GPIO_PIN_RESET)
+		return true;
+	else
+		return false;
 }
 
 void hw_delay_ms(uint32_t time_ms){

@@ -100,19 +100,17 @@ void shell_process(void){
 					}
 				}
 			}
-			else if((strncmp("led", (char*)argv[0],3) == 0) && (strncmp("time", (char*)argv[1],4) == 0)){
+			else if(strncmp("led", (char*)argv[0],3) == 0){
 				int n = 0;
 
 				if(sscanf((char*)argv[1], "%d",&n)){
-					if(strncmp("on", (char*)argv[2],3) == 0){
-//						hw_led_state_set(true);
-						delay = 50;
+					if(strncmp("on", (char*)argv[2],2) == 0){
+						hw_led_n_state_set(n,true);
 						shell_uart_tx((uint8_t*)"led 1 on\n",9);
 						error = false;
 					}
 					else if(strncmp("off", (char*)argv[2],3) == 0){
-//						hw_led_state_set(false);
-						delay = 1000;
+						hw_led_n_state_set(n,false);
 						shell_uart_tx((uint8_t*)"led 1 off\n",100);
 						error = false;
 					}
@@ -128,10 +126,18 @@ void shell_process(void){
 				int n = 0;
 
 				if(sscanf((char*)argv[1], "%d",&n)){
-					hw_button_state_get();
-					shell_uart_tx((uint8_t*)"bot 1 off\n",10);
+					if(hw_button_n_state_get(n))
+						shell_uart_tx((uint8_t*)"bot 1 on\n",9);
+					else
+						shell_uart_tx((uint8_t*)"bot 1 off\n",10);
 					error = false;
 				}
+			}
+		}
+		else if(argc == 1){
+			if(strncmp("help", (char*)argv[0],4) == 0){
+				shell_uart_tx((uint8_t*)"led <n> <on|off>: liga ou desliga um dos leds da placa, n = identificacao do led; bot <n>: Realiza a leitura de um determinado pino de GPIO, n = identificacao do led; help: Lista os comados suportados e maneira de usar.\n",220);
+				error = false;
 			}
 		}
 	}
