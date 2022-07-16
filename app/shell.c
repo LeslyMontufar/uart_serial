@@ -107,14 +107,13 @@ void shell_process(void){
 				if(sscanf((char*)argv[1], "%d",&n)){
 					if(strncmp("on", (char*)argv[2],2) == 0){
 						hw_led_n_state_set(n,true);
-						sprintf(s, "led %d on\n", n);
-						shell_uart_tx(s,9);
-						error = false;
 					}
 					else if(strncmp("off", (char*)argv[2],3) == 0){
 						hw_led_n_state_set(n,false);
-						sprintf(s, "led %d off\n", n);
-						shell_uart_tx(s,10);
+					}
+					if(!strncmp("on", (char*)argv[2],2) && !strncmp("off", (char*)argv[2],3)){
+						tx_size = snprintf(s, SHELL_UART_BUFFER_MAX,"%s %d %s\n", argv[0],n,argv[2]);
+						shell_uart_tx(s,tx_size);
 						error = false;
 					}
 				}
