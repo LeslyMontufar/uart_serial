@@ -49,6 +49,10 @@ void app_button2_interrupt(void){
 		return;
 
 	if((hw_tick_ms_get() - debouncing_time_ms) >= APP_DEBOUNCING_TIME_MS){
+		if(hw_led_n_state_get(2))
+			SERIAL_TX("led 2 off\n");
+		else
+			SERIAL_TX("led 2 on\n");
 		debouncing_time_ms = hw_tick_ms_get();
 	}
 }

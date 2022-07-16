@@ -95,14 +95,13 @@ void shell_process(void){
 				if(sscanf((char*)argv[2], "%d",&time_ms) == 1){
 					if(time_ms > 0){
 						delay = time_ms;
-						shell_uart_tx("ok\n",3);
+						shell_uart_tx((char*)"ok\n",3);
 						error = false;
 					}
 				}
 			}
 			else if(strncmp("led", (char*)argv[0],3) == 0){
 				int n = 0;
-				uint8_t s[SHELL_UART_BUFFER_MAX];
 
 				if(sscanf((char*)argv[1], "%d",&n)){
 					if(strncmp("on", (char*)argv[2],2) == 0){
@@ -111,9 +110,9 @@ void shell_process(void){
 					else if(strncmp("off", (char*)argv[2],3) == 0){
 						hw_led_n_state_set(n,false);
 					}
-					if(!strncmp("on", (char*)argv[2],2) && !strncmp("off", (char*)argv[2],3)){
-						tx_size = snprintf(s, SHELL_UART_BUFFER_MAX,"%s %d %s\n", argv[0],n,argv[2]);
-						shell_uart_tx(s,tx_size);
+					if((strncmp("on", (char*)argv[2],2)== 0) || (strncmp("off", (char*)argv[2],3)==0)){
+						shell_ctrl.size = sprintf((char*)shell_ctrl.cmd, "%s %d %s\n", argv[0],n,argv[2]);
+						shell_uart_tx(shell_ctrl.cmd, shell_ctrl.size);
 						error = false;
 					}
 				}
@@ -126,17 +125,17 @@ void shell_process(void){
 			}
 			else if(strncmp("bot", (char*)argv[0],3) == 0){
 				int n = 0;
-				uint8_t s[SHELL_UART_BUFFER_MAX];
 
 				if(sscanf((char*)argv[1], "%d",&n)){
 					if(hw_button_n_state_get(n)){
-						sprintf(s, "bot %d on\n", n);
-						shell_uart_tx(s,9);
+						shell_ctrl.size = sprintf((char*)shell_ctrl.cmd, "%s %d on\n", argv[0],n);
+						shell_uart_tx(shell_ctrl.cmd, shell_ctrl.size);
+						error = false;
 					}else {
-						sprintf(s, "bot %d off\n", n);
-						shell_uart_tx(s,10);
+						shell_ctrl.size = sprintf((char*)shell_ctrl.cmd, "%s %d off\n", argv[0],n);
+						shell_uart_tx(shell_ctrl.cmd, shell_ctrl.size);
+						error = false;
 					}
-					error = false;
 				}
 			}
 		}
