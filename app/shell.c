@@ -169,7 +169,7 @@ void shell_add_byte(uint8_t c){
 void shell_uart_interrupt(void){
 	uint8_t c;
 	uint32_t sr;
-	USART_TypeDef *h = huart1.Instance; // para o shell q está na uart1
+	USART_TypeDef *h = huart1.Instance; // shell (uart1)
 
 	sr = h->SR;
 	while(sr & (UART_FLAG_ORE | UART_FLAG_PE | UART_FLAG_FE | UART_FLAG_NE)){
