@@ -52,6 +52,7 @@ static void shell_uart_tx_byte(uint8_t c){
 void shell_uart_tx(uint8_t *buffer, uint32_t size){
 	for(size_t pos=0; pos<size; pos++)
 		shell_uart_tx_byte(buffer[pos]);
+
 }
 
 uint32_t shell_parse_args(uint8_t * const cmdline, uint32_t size, uint32_t *argc, uint8_t *argv[], uint32_t max_args){
@@ -107,7 +108,7 @@ void shell_process(void){
 				if(sscanf((char*)argv[1], "%d",&n)){
 					if(strncmp("on", (char*)argv[2],2) == 0){
 						hw_led_n_state_set(n,true);
-						sprintf(s, "led %d off\n", n);
+						sprintf(s, "led %d on\n", n);
 						shell_uart_tx(s,9);
 						error = false;
 					}

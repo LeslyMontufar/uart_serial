@@ -11,6 +11,7 @@
 #include "main.h"
 #include "app.h"
 #include "cbf.h"
+#include "hw.h"
 
 extern UART_HandleTypeDef huart2; //extern: linker sabe que essa var já existe, e usa essa msm variável
 static cbf_t *hw_uart_cbf = 0; // buffer circular
@@ -35,7 +36,7 @@ void hw_uart_init(cbf_t *cbf){
 	hw_uart_enable_interrupts();
 }
 
-// INTERRUPÇÃO - recepção
+// INTERRUPÇÃO - recepção - importante!
 void hw_uart2_interrupt(void){
 	uint8_t c;
 	uint32_t sr;
@@ -54,6 +55,10 @@ void hw_uart2_interrupt(void){
 		if(hw_uart_cbf)
 			cbf_put(hw_uart_cbf,c);
 	}
+	if(hw_led_n_state_get(3))
+		hw_led_n_state_set(3,false);
+	else
+		hw_led_n_state_set(3,true);
 }
 
 // POOLING - transmissão
