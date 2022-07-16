@@ -52,7 +52,6 @@ static void shell_uart_tx_byte(uint8_t c){
 void shell_uart_tx(uint8_t *buffer, uint32_t size){
 	for(size_t pos=0; pos<size; pos++)
 		shell_uart_tx_byte(buffer[pos]);
-
 }
 
 uint32_t shell_parse_args(uint8_t * const cmdline, uint32_t size, uint32_t *argc, uint8_t *argv[], uint32_t max_args){
@@ -96,7 +95,7 @@ void shell_process(void){
 				if(sscanf((char*)argv[2], "%d",&time_ms) == 1){
 					if(time_ms > 0){
 						delay = time_ms;
-						shell_uart_tx((uint8_t*)"ok\n",3);
+						shell_uart_tx("ok\n",3);
 						error = false;
 					}
 				}
