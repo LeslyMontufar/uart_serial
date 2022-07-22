@@ -88,6 +88,7 @@ void shell_process(void){
 	bool error = true;
 
 	if(shell_parse_args(shell_ctrl.cmd, shell_ctrl.size, &argc, (uint8_t **)argv, SHELL_MAX_ARGS)){
+		hw_led_n_state_set(3,false);
 		if(argc == 3){
 			if((strncmp("set", (char*)argv[0],3) == 0) && (strncmp("time", (char*)argv[1],4) == 0)){
 				int time_ms = 0;
@@ -95,7 +96,7 @@ void shell_process(void){
 				if(sscanf((char*)argv[2], "%d",&time_ms) == 1){
 					if(time_ms > 0){
 						delay = time_ms;
-						shell_uart_tx((char*)"ok\n",3);
+						shell_uart_tx((uint8_t*)"ok\n",3);
 						error = false;
 					}
 				}
