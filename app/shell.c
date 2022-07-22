@@ -88,7 +88,6 @@ void shell_process(void){
 	bool error = true;
 
 	if(shell_parse_args(shell_ctrl.cmd, shell_ctrl.size, &argc, (uint8_t **)argv, SHELL_MAX_ARGS)){
-		hw_led_n_state_set(3,false);
 		if(argc == 3){
 			if((strncmp("set", (char*)argv[0],3) == 0) && (strncmp("time", (char*)argv[1],4) == 0)){
 				int time_ms = 0;
@@ -96,24 +95,26 @@ void shell_process(void){
 				if(sscanf((char*)argv[2], "%d",&time_ms) == 1){
 					if(time_ms > 0){
 						delay = time_ms;
-						shell_uart_tx((uint8_t*)"ok\n",3);
+						shell_uart_tx("ok\n",3);
 						error = false;
 					}
 				}
 			}
 			else if(strncmp("led", (char*)argv[0],3) == 0){
 				int n = 0;
+				uint8_t s[SHELL_UART_BUFFER_MAX];
 
 				if(sscanf((char*)argv[1], "%d",&n)){
 					if(strncmp("on", (char*)argv[2],2) == 0){
 						hw_led_n_state_set(n,true);
+						sprintf(s, "led %d on\n", n);
+						shell_uart_tx(s,9);
+						error = false;
 					}
 					else if(strncmp("off", (char*)argv[2],3) == 0){
 						hw_led_n_state_set(n,false);
-					}
-					if((strncmp("on", (char*)argv[2],2)== 0) || (strncmp("off", (char*)argv[2],3)==0)){
-						shell_ctrl.size = sprintf((char*)shell_ctrl.cmd, "%s %d %s\n", argv[0],n,argv[2]);
-						shell_uart_tx(shell_ctrl.cmd, shell_ctrl.size);
+						sprintf(s, "led %d off\n", n);
+						shell_uart_tx(s,10);
 						error = false;
 					}
 				}
@@ -126,17 +127,17 @@ void shell_process(void){
 			}
 			else if(strncmp("bot", (char*)argv[0],3) == 0){
 				int n = 0;
+				uint8_t s[SHELL_UART_BUFFER_MAX];
 
 				if(sscanf((char*)argv[1], "%d",&n)){
 					if(hw_button_n_state_get(n)){
-						shell_ctrl.size = sprintf((char*)shell_ctrl.cmd, "%s %d on\n", argv[0],n);
-						shell_uart_tx(shell_ctrl.cmd, shell_ctrl.size);
-						error = false;
+						sprintf(s, "bot %d on\n", n);
+						shell_uart_tx(s,9);
 					}else {
-						shell_ctrl.size = sprintf((char*)shell_ctrl.cmd, "%s %d off\n", argv[0],n);
-						shell_uart_tx(shell_ctrl.cmd, shell_ctrl.size);
-						error = false;
+						sprintf(s, "bot %d off\n", n);
+						shell_uart_tx(s,10);
 					}
+					error = false;
 				}
 			}
 		}
@@ -170,7 +171,7 @@ void shell_add_byte(uint8_t c){
 void shell_uart_interrupt(void){
 	uint8_t c;
 	uint32_t sr;
-	USART_TypeDef *h = huart1.Instance; // shell (uart1)
+	USART_TypeDef *h = huart1.Instance; // para o shell q está na uart1
 
 	sr = h->SR;
 	while(sr & (UART_FLAG_ORE | UART_FLAG_PE | UART_FLAG_FE | UART_FLAG_NE)){

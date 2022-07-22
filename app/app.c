@@ -33,17 +33,10 @@ void app_button_interrupt(void){
 
 	if((hw_tick_ms_get() - debouncing_time_ms) >= APP_DEBOUNCING_TIME_MS){
 		if(delay == 1000){
-
-//			SERIAL_TX("set timer 50\n"); //13
-			hw_uart_tx((uint8_t*)"set timer 50\n",13);
-
-//			delay = 50;
+			SERIAL_TX("set timer 50\n"); //13
 		}
 		else{
-			hw_led_n_state_set(3,true);
 			SERIAL_TX("set timer 1000\n"); //15
-
-//			delay = 1000;
 		}
 		debouncing_time_ms = hw_tick_ms_get();
 	}
@@ -56,13 +49,6 @@ void app_button2_interrupt(void){
 		return;
 
 	if((hw_tick_ms_get() - debouncing_time_ms) >= APP_DEBOUNCING_TIME_MS){
-		if(hw_led_n_state_get(2)){
-//			SERIAL_TX("led 2 off\n");
-			hw_led_n_state_set(2,false);
-		}else{
-//			SERIAL_TX("led 2 on\n");
-			hw_led_n_state_set(2,true);
-		}
 		debouncing_time_ms = hw_tick_ms_get();
 	}
 }

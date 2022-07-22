@@ -55,12 +55,10 @@ void hw_uart2_interrupt(void){
 		if(hw_uart_cbf)
 			cbf_put(hw_uart_cbf,c);
 	}
-
-	// led 3 que liga e desliga a cada caractere
-//	if(hw_led_n_state_get(3))
-//		hw_led_n_state_set(3,false);
-//	else
-//		hw_led_n_state_set(3,true);
+	if(hw_led_n_state_get(3))
+		hw_led_n_state_set(3,false);
+	else
+		hw_led_n_state_set(3,true);
 }
 
 // POOLING - transmissão

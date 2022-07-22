@@ -1,5 +1,5 @@
 ../app/app.c:28:6:app_button_interrupt	8	static
-../app/app.c:52:6:app_button2_interrupt	8	static
-../app/app.c:70:6:app_tick_1ms	4	static
-../app/app.c:75:6:app_init	8	static
-../app/app.c:83:6:app_loop	4	static
+../app/app.c:51:6:app_button2_interrupt	8	static
+../app/app.c:69:6:app_tick_1ms	4	static
+../app/app.c:74:6:app_init	8	static
+../app/app.c:82:6:app_loop	4	static
