@@ -117,7 +117,7 @@ void shell_process(void){
 ```
 4. Para realizar um teste, o botão 1 que funciona por interrupção, envia uma msg de mudar delay em que o led 1 pisca.
 ```
-#define SERIAL_TX(texto)		hw_uart_tx((uint8_t*)texto,sizeof(texto))
+#define SERIAL_TX(texto)		hw_uart_tx((uint8_t*)texto,strlen(texto))
 
 static cbf_t cbf;
 static uint8_t cbf_area[APP_UART_BUFFER_MAX];
