@@ -1,20 +1,19 @@
 /*
  * hw.c
- * Abstrai as funções do HAL e CMSIS
  *
- *  Created on: July 10, 2022
+ *  Created on: Jul 24, 2022
  *      Author: lesly
  */
+
 
 #include <stdbool.h>
 #include <stdint.h>
 #include "main.h"
 #include "app.h"
 #include "cbf.h"
-#include "hw.h"
 
-extern UART_HandleTypeDef huart2; //extern: linker sabe que essa var já existe, e usa essa msm variável
-static cbf_t *hw_uart_cbf = 0; // buffer circular
+extern UART_HandleTypeDef huart2;
+static cbf_t *hw_uart_cbf = 0;
 
 void hw_uart_disable_interrupts(void){
 	HAL_NVIC_DisableIRQ(USART2_IRQn);
@@ -36,7 +35,7 @@ void hw_uart_init(cbf_t *cbf){
 	hw_uart_enable_interrupts();
 }
 
-// INTERRUPÇÃO - recepção - importante!
+// INTERRUPÇÃO - recepção
 void hw_uart2_interrupt(void){
 	uint8_t c;
 	uint32_t sr;
@@ -48,22 +47,16 @@ void hw_uart2_interrupt(void){
 		c = h->DR;
 	}
 
-	// se sem erros e com dado recebido ... pegar o dado e colocar no buffer
 	if(sr & UART_FLAG_RXNE){
 		c = h->DR;
 
 		if(hw_uart_cbf)
 			cbf_put(hw_uart_cbf,c);
 	}
-	if(hw_led_n_state_get(3))
-		hw_led_n_state_set(3,false);
-	else
-		hw_led_n_state_set(3,true);
 }
 
-// POOLING - transmissão
 static void hw_uart_tx_byte(uint8_t c){
-	USART_TypeDef *h = huart2.Instance; // USART_PORT
+	USART_TypeDef *h = huart2.Instance;
 
 	// garante que o shift register esteja vazio
 	while(!(h->SR & UART_FLAG_TXE)){}
@@ -77,28 +70,18 @@ void hw_uart_tx(uint8_t *buffer, uint32_t size){
 
 // ---------------------------------------------------- //
 
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+	if(GPIO_Pin == BUTTON_Pin){
+		app_button_interrupt();
+	}
+	if(GPIO_Pin == BUTTON2_Pin){
+		app_button2_interrupt();
+	}
+}
+
 bool hw_button_state_get(void){
 	GPIO_PinState button_state = HAL_GPIO_ReadPin(BUTTON_GPIO_Port, BUTTON_Pin);
 
-	if(button_state == GPIO_PIN_RESET)
-		return true;
-	else
-		return false;
-}
-
-bool hw_button_n_state_get(uint8_t n){
-	GPIO_PinState button_state;
-	switch(n){
-		case 1:
-			button_state = HAL_GPIO_ReadPin(BUTTON_GPIO_Port, BUTTON_Pin);
-			break;
-		case 2:
-			button_state = HAL_GPIO_ReadPin(BUTTON2_GPIO_Port, BUTTON2_Pin);
-			break;
-		default:
-			button_state = HAL_GPIO_ReadPin(BUTTON_GPIO_Port, BUTTON_Pin);
-			break;
-	}
 	if(button_state == GPIO_PIN_RESET)
 		return true;
 	else
@@ -112,6 +95,18 @@ void hw_led_toggle(void){
 void hw_led_state_set(bool state){
 	GPIO_PinState led_state = state ? GPIO_PIN_RESET : GPIO_PIN_SET;
 	HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, led_state);
+}
+
+void hw_delay_ms(uint32_t time_ms){
+	HAL_Delay(time_ms);
+}
+
+void hw_cpu_sleep(){
+	__WFI();
+}
+
+uint32_t hw_tick_ms_get(void){
+	return HAL_GetTick();
 }
 
 void hw_led_n_state_set(uint8_t n, bool state){
@@ -154,14 +149,21 @@ bool hw_led_n_state_get(uint8_t n){
 		return false;
 }
 
-void hw_delay_ms(uint32_t time_ms){
-	HAL_Delay(time_ms);
-}
-
-void hw_cpu_sleep(){
-	__WFI();
-}
-
-uint32_t hw_tick_ms_get(void){
-	return HAL_GetTick();
+bool hw_button_n_state_get(uint8_t n){
+	GPIO_PinState button_state;
+	switch(n){
+		case 1:
+			button_state = HAL_GPIO_ReadPin(BUTTON_GPIO_Port, BUTTON_Pin);
+			break;
+		case 2:
+			button_state = HAL_GPIO_ReadPin(BUTTON2_GPIO_Port, BUTTON2_Pin);
+			break;
+		default:
+			button_state = HAL_GPIO_ReadPin(BUTTON_GPIO_Port, BUTTON_Pin);
+			break;
+	}
+	if(button_state == GPIO_PIN_RESET)
+		return true;
+	else
+		return false;
 }

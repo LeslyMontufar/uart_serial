@@ -1,3 +1,10 @@
+/*
+ * cbf.c
+ *
+ *  Created on: Jul 24, 2022
+ *      Author: lesly
+ */
+
 #include <stdbool.h>
 #include <stdint.h>
 #include "cbf.h"
@@ -46,5 +53,3 @@ cbf_status_t cbf_put(cbf_t *cb, uint8_t c){
 
 	return CBF_OK;
 }
-
-
