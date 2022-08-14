@@ -30,15 +30,10 @@ void app_button_interrupt(void){
 
 	if((hw_tick_ms_get() - debouncing_time_ms) >= APP_DEBOUNCING_TIME_MS){
 		if(delay == 1000){
-//			hw_uart_tx((uint8_t*)"led 1 on\n",9);
-//			hw_uart_tx((uint8_t*)"set timer 50\n",13);
 			HW_SEND_MSG("set timer 50\n");
-
-//			hw_uart_tx((uint8_t*)"set timer 50\n",sizeof("set timer 50\n"));
 		}
 		else{
 			HW_SEND_MSG("set timer 1000\n");
-//			hw_uart_tx((uint8_t*)"led 1 off\n",10);
 		}
 		debouncing_time_ms = hw_tick_ms_get();
 	}

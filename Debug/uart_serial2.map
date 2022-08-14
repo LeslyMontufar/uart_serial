@@ -3497,7 +3497,7 @@ LOAD c:/st/stm32cubeide_1.9.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.exte
  .debug_macro   0x0000000000016ac2      0x11f ./app/shell.o
  .debug_macro   0x0000000000016be1       0x56 ./app/shell.o
 
-.debug_line     0x0000000000000000     0x8508
+.debug_line     0x0000000000000000     0x8507
  .debug_line    0x0000000000000000      0x76d ./Core/Src/main.o
  .debug_line    0x000000000000076d      0x6ce ./Core/Src/stm32f1xx_hal_msp.o
  .debug_line    0x0000000000000e3b      0x770 ./Core/Src/stm32f1xx_it.o
@@ -3509,10 +3509,10 @@ LOAD c:/st/stm32cubeide_1.9.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.exte
  .debug_line    0x000000000000358a      0x97f ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.o
  .debug_line    0x0000000000003f09      0xcf6 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.o
  .debug_line    0x0000000000004bff     0x19c3 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.o
- .debug_line    0x00000000000065c2      0x64d ./app/app.o
- .debug_line    0x0000000000006c0f      0x492 ./app/cbf.o
- .debug_line    0x00000000000070a1      0x886 ./app/hw.o
- .debug_line    0x0000000000007927      0xbe1 ./app/shell.o
+ .debug_line    0x00000000000065c2      0x64c ./app/app.o
+ .debug_line    0x0000000000006c0e      0x492 ./app/cbf.o
+ .debug_line    0x00000000000070a0      0x886 ./app/hw.o
+ .debug_line    0x0000000000007926      0xbe1 ./app/shell.o
 
 .debug_str      0x0000000000000000    0x82fa6
  .debug_str     0x0000000000000000    0x7cc97 ./Core/Src/main.o
